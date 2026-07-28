@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Mi Tienda{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>¿Qué se te antoja hoy?</h1>
+  <p>Elige una sección para ver los productos disponibles.</p>
+</div>
+
+<div class="section-grid">
+  {% for key, info in sections.items() %}
+    <a class="section-card card-{{ key }}" href="{{ url_for('main.section_view', section=key) }}">
+      <span class="section-emoji">{{ info.emoji }}</span>
+      <span class="section-name">{{ info.label }}</span>
+      <span class="section-count">{{ counts.get(key, 0) }} productos</span>
+    </a>
+  {% endfor %}
+</div>
+{% endblock %}

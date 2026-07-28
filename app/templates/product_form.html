@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar producto' if mode == 'edit' else 'Nuevo producto' }}{% endblock %}
+{% block content %}
+<div class="form-wrap">
+  <h1>{{ 'Editar producto' if mode == 'edit' else 'Nuevo producto' }}</h1>
+
+  <form method="post" enctype="multipart/form-data" class="product-form">
+    <label>Nombre
+      <input type="text" name="name" value="{{ product.name if product else '' }}" required>
+    </label>
+
+    <label>Sección
+      <select name="section" id="section-select" required>
+        <option value="">Elige una sección</option>
+        {% for key, info in sections.items() %}
+          <option value="{{ key }}" data-margin="{{ info.margin }}"
+            {% if product and product.section == key %}selected{% endif %}>{{ info.emoji }} {{ info.label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>Foto del producto
+      <input type="file" name="image" accept="image/*" capture="environment">
+    </label>
+    {% if product and product.image_url %}
+      <img class="current-image" src="{{ product.image_url }}" alt="Foto actual">
+    {% endif %}
+
+    <label>Precio de costo (lo que te costó)
+      <input type="number" step="0.01" min="0" name="cost_price" id="cost-price"
+             value="{{ product.cost_price if product else '' }}" required>
+    </label>
+
+    <p class="recommendation" id="recommendation">Elige sección y costo para ver la recomendación de venta.</p>
+
+    <label>Precio de venta
+      <input type="number" step="0.01" min="0" name="sale_price" id="sale-price"
+             value="{{ product.sale_price if product else '' }}" required>
+    </label>
+
+    <label>Cantidad disponible
+      <input type="number" min="0" name="quantity" value="{{ product.quantity if product else 0 }}" required>
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox" name="for_sale" {% if not product or product.for_sale %}checked{% endif %}>
+      Publicar para la venta ahora
+    </label>
+
+    <button class="btn btn-primary" type="submit">{{ 'Guardar cambios' if mode == 'edit' else 'Agregar producto' }}</button>
+  </form>
+</div>
+
+<script>
+  const sectionSelect = document.getElementById('section-select');
+  const costInput = document.getElementById('cost-price');
+  const saleInput = document.getElementById('sale-price');
+  const recommendation = document.getElementById('recommendation');
+
+  function updateRecommendation() {
+    const opt = sectionSelect.options[sectionSelect.selectedIndex];
+    const margin = parseFloat(opt ? opt.dataset.margin : '');
+    const cost = parseFloat(costInput.value);
+    if (!margin || !cost) {
+      recommendation.textContent = 'Elige sección y costo para ver la recomendación de venta.';
+      return;
+    }
+    const recommended = (cost * (1 + margin)).toFixed(2);
+    recommendation.innerHTML = `Recomendación: vender a <strong>$${recommended}</strong> (margen ${(margin * 100).toFixed(0)}%)`;
+    if (!saleInput.value) {
+      saleInput.value = recommended;
+    }
+  }
+
+  sectionSelect.addEventListener('change', updateRecommendation);
+  costInput.addEventListener('input', updateRecommendation);
+  updateRecommendation();
+</script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ sections[section].label }}{% endblock %}
+{% block content %}
+<div class="section-header">
+  <a class="back-link" href="{{ url_for('main.home') }}">← Todas las secciones</a>
+  <h1>{{ sections[section].emoji }} {{ sections[section].label }}</h1>
+</div>
+
+{% if products %}
+<div class="product-grid">
+  {% for p in products %}
+  <div class="product-card {% if not p.for_sale %}not-for-sale{% endif %}">
+    {% if p.image_url %}
+      <img class="product-img" src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy">
+    {% else %}
+      <div class="product-img placeholder">{{ sections[section].emoji }}</div>
+    {% endif %}
+    <div class="product-body">
+      <h3 class="product-name">{{ p.name }}</h3>
+      <p class="product-price">${{ "%.2f"|format(p.sale_price) }}</p>
+      <p class="product-qty">Disponibles: {{ p.quantity }}</p>
+      {% if not p.for_sale %}<span class="badge">No disponible</span>{% endif %}
+
+      {% if is_admin %}
+      <div class="admin-actions">
+        <p class="cost-hint">Costo: ${{ "%.2f"|format(p.cost_price) }}</p>
+        <a class="btn btn-small" href="{{ url_for('main.edit_product', product_id=p.id) }}">Editar</a>
+        <form action="{{ url_for('main.toggle_product', product_id=p.id) }}" method="post" class="inline-form">
+          <button class="btn btn-small btn-ghost" type="submit">{{ 'Ocultar' if p.for_sale else 'Publicar' }}</button>
+        </form>
+        <form action="{{ url_for('main.delete_product', product_id=p.id) }}" method="post" class="inline-form"
+              onsubmit="return confirm('¿Eliminar {{ p.name }}?');">
+          <button class="btn btn-small btn-danger" type="submit">Eliminar</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty-state">Todavía no hay productos en esta sección.</p>
+{% if is_admin %}<a class="btn" href="{{ url_for('main.add_product') }}">Agregar el primero</a>{% endif %}
+{% endif %}
+{% endblock %}

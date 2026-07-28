@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Administrar{% endblock %}
+{% block content %}
+<div class="form-wrap narrow">
+  <h1>Acceso de administrador</h1>
+  <p class="muted">Ingresa la clave para agregar o editar productos.</p>
+  <form method="post" class="product-form">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label>Clave
+      <input type="password" name="password" required autofocus>
+    </label>
+    <button class="btn btn-primary" type="submit">Entrar</button>
+  </form>
+</div>
+{% endblock %}
