@@ -7,13 +7,13 @@
     font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
   body {
-    @apply bg-white text-slate-900;
+    @apply bg-stone-50 text-slate-900;
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer active:scale-[0.98];
   }
   .btn-secondary {
     @apply btn bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 focus-visible:ring-slate-400;
@@ -22,21 +22,49 @@
     @apply btn bg-white text-red-600 border border-slate-300 hover:bg-red-50 focus-visible:ring-red-500;
   }
   .icon-btn {
-    @apply inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 text-slate-600 bg-white hover:bg-slate-50 transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-slate-400;
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 ease-out cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-slate-400 active:scale-95;
   }
   .card {
-    @apply bg-white border border-slate-200 rounded-lg shadow-card;
+    @apply bg-white border border-slate-200/70 rounded-xl shadow-card;
+  }
+  .card-hover {
+    @apply transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card-hover;
   }
   .field-label {
     @apply block text-sm font-medium text-slate-700 mb-1.5;
   }
   .field-input {
-    @apply block w-full rounded-md border border-slate-300 px-3 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:border-transparent;
+    @apply block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:border-transparent transition-shadow duration-150;
   }
   .badge {
     @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
   }
   .top-pill {
-    @apply inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-medium transition-colors duration-150 cursor-pointer;
+    @apply inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200 ease-out cursor-pointer;
+  }
+}
+
+@layer utilities {
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none;
+  }
+  .card-hover {
+    @apply hover:translate-y-0;
   }
 }

@@ -11,10 +11,12 @@ SECTIONS = {
         "accent_text": "text-dulces-600",
         "accent_ring": "focus-visible:ring-dulces-600",
         "soft_bg": "bg-dulces-50",
+        "gradient_from": "from-dulces-50",
         "soft_text": "text-dulces-700",
         "soft_border": "border-dulces-100",
         "icon_bg": "bg-dulces-100",
         "icon_text": "text-dulces-600",
+        "accent_shadow": "shadow-dulces-600/25 hover:shadow-dulces-600/35",
     },
     "tecnologia": {
         "label": "Tecnologia",
@@ -25,10 +27,12 @@ SECTIONS = {
         "accent_text": "text-tecnologia-600",
         "accent_ring": "focus-visible:ring-tecnologia-600",
         "soft_bg": "bg-tecnologia-50",
+        "gradient_from": "from-tecnologia-50",
         "soft_text": "text-tecnologia-700",
         "soft_border": "border-tecnologia-100",
         "icon_bg": "bg-tecnologia-100",
         "icon_text": "text-tecnologia-600",
+        "accent_shadow": "shadow-tecnologia-600/25 hover:shadow-tecnologia-600/35",
     },
 }
 
