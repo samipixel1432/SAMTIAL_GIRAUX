@@ -4,34 +4,56 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Mi Tienda{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
 </head>
-<body class="section-{{ section or 'default' }}">
-  <header class="topbar">
-    <a class="brand" href="{{ url_for('main.home') }}">🛍️ Mi Tienda</a>
-    <nav class="topnav">
-      {% if is_admin %}
-        <a class="pill" href="{{ url_for('main.add_product') }}">+ Producto</a>
-        <form action="{{ url_for('main.logout') }}" method="post" class="inline-form">
-          <button class="pill ghost" type="submit">Salir</button>
-        </form>
-      {% else %}
-        <a class="pill ghost" href="{{ url_for('main.login') }}">Administrar</a>
-      {% endif %}
-    </nav>
+<body class="min-h-dvh bg-white font-sans text-slate-900 antialiased">
+  {% from "_icons.html" import icon %}
+
+  <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <a href="{{ url_for('main.home') }}" class="flex items-center gap-2 text-slate-900">
+        {{ icon('shopping-bag', 'w-6 h-6') }}
+        <span class="text-lg font-semibold tracking-tight">Mi Tienda</span>
+      </a>
+      <nav class="flex items-center gap-2">
+        {% if is_admin %}
+          <a href="{{ url_for('main.add_product') }}" class="top-pill bg-slate-900 text-white hover:bg-slate-700">
+            {{ icon('plus', 'w-4 h-4') }}
+            <span class="hidden sm:inline">Producto</span>
+          </a>
+          <form action="{{ url_for('main.logout') }}" method="post">
+            <button type="submit" class="top-pill text-slate-600 hover:bg-slate-100" aria-label="Cerrar sesion">
+              {{ icon('logout', 'w-4 h-4') }}
+              <span class="hidden sm:inline">Salir</span>
+            </button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('main.login') }}" class="top-pill border border-slate-300 text-slate-700 hover:bg-slate-50">
+            {{ icon('lock', 'w-4 h-4') }}
+            <span>Administrar</span>
+          </a>
+        {% endif %}
+      </nav>
+    </div>
   </header>
 
   {% with messages = get_flashed_messages() %}
     {% if messages %}
-      <div class="flash-wrap">
+      <div class="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
         {% for message in messages %}
-          <div class="flash">{{ message }}</div>
+          <div class="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            {{ icon('exclamation-triangle', 'w-4 h-4 shrink-0') }}
+            <span>{{ message }}</span>
+          </div>
         {% endfor %}
       </div>
     {% endif %}
   {% endwith %}
 
-  <main class="container">
+  <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
     {% block content %}{% endblock %}
   </main>
 </body>

@@ -1,17 +1,28 @@
 {% extends "base.html" %}
+{% from "_icons.html" import icon %}
 {% block title %}Mi Tienda{% endblock %}
 {% block content %}
-<div class="hero">
-  <h1>¿Qué se te antoja hoy?</h1>
-  <p>Elige una sección para ver los productos disponibles.</p>
+<div class="mb-10">
+  <h1 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">Colecciones</h1>
+  <p class="mt-1.5 text-slate-500">Elige una categoria para ver los productos disponibles.</p>
 </div>
 
-<div class="section-grid">
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
   {% for key, info in sections.items() %}
-    <a class="section-card card-{{ key }}" href="{{ url_for('main.section_view', section=key) }}">
-      <span class="section-emoji">{{ info.emoji }}</span>
-      <span class="section-name">{{ info.label }}</span>
-      <span class="section-count">{{ counts.get(key, 0) }} productos</span>
+    <a href="{{ url_for('main.section_view', section=key) }}"
+       class="card group flex items-center gap-4 p-5 transition-shadow duration-150 hover:shadow-card-hover">
+      <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg {{ info.icon_bg }} {{ info.icon_text }}">
+        {{ icon(info.icon, 'w-7 h-7') }}
+      </span>
+      <span class="min-w-0 flex-1">
+        <span class="block text-lg font-semibold text-slate-900">{{ info.label }}</span>
+        <span class="block text-sm text-slate-500">{{ counts.get(key, 0) }} productos</span>
+      </span>
+      <span class="text-slate-300 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-slate-400">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+          <polyline points="9 5 16 12 9 19"></polyline>
+        </svg>
+      </span>
     </a>
   {% endfor %}
 </div>
