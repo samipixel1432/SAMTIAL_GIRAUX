@@ -41,9 +41,9 @@
 
     <div>
       <label for="image" class="field-label">Foto del producto</label>
-      <label for="image" class="flex cursor-pointer flex-col items-center gap-2 rounded-md border border-dashed border-slate-300 px-4 py-8 text-center text-slate-500 hover:border-slate-400 hover:bg-slate-50">
-        {{ icon('camera', 'w-7 h-7 text-slate-400') }}
-        <span class="text-sm">Toca para tomar o elegir una foto</span>
+      <label for="image" id="dropzone" class="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-8 text-center text-slate-500 transition-all duration-200 ease-out hover:border-slate-400">
+        <span id="dropzone-icon">{{ icon('camera', 'w-7 h-7 text-slate-400') }}</span>
+        <span class="text-sm" id="dropzone-text">Arrastra una imagen o toca para elegir</span>
       </label>
       <input type="file" name="image" id="image" accept="image/*" capture="environment" class="sr-only">
       {% if product and product.image_url %}
@@ -74,10 +74,13 @@
              value="{{ product.quantity if product else 0 }}" required>
     </div>
 
-    <label class="flex items-center gap-2.5 text-sm font-medium text-slate-700">
-      <input type="checkbox" name="for_sale" class="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+    <label class="flex cursor-pointer items-center justify-between gap-3">
+      <span class="text-sm font-medium text-slate-700">Publicar para la venta ahora</span>
+      <input type="checkbox" name="for_sale" class="peer sr-only"
              {% if not product or product.for_sale %}checked{% endif %}>
-      Publicar para la venta ahora
+      <span class="flex h-7 w-12 shrink-0 items-center justify-start rounded-full bg-slate-200 p-1 transition-colors duration-200 ease-out peer-checked:justify-end peer-checked:bg-slate-900 peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-slate-400">
+        <span class="h-5 w-5 rounded-full bg-white shadow"></span>
+      </span>
     </label>
 
     <button type="submit" class="btn w-full bg-slate-900 text-white hover:bg-slate-700 focus-visible:ring-slate-900">
@@ -130,11 +133,33 @@
       .catch(() => {});
   });
 
+  const dropzone = document.getElementById('dropzone');
+  const dropzoneText = document.getElementById('dropzone-text');
+  const dropzoneIconSvg = document.querySelector('#dropzone-icon svg');
+
+  function setDropzoneActive(active) {
+    dropzone.classList.toggle('border-slate-900', active);
+    dropzone.classList.toggle('bg-slate-100', active);
+    dropzone.classList.toggle('border-slate-300', !active);
+    dropzone.classList.toggle('bg-slate-50', !active);
+    dropzoneIconSvg.classList.toggle('text-slate-900', active);
+    dropzoneIconSvg.classList.toggle('text-slate-400', !active);
+  }
+
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); setDropzoneActive(true); });
+  dropzone.addEventListener('dragleave', () => setDropzoneActive(false));
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    setDropzoneActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      imageInput.files = e.dataTransfer.files;
+      imageInput.dispatchEvent(new Event('change'));
+    }
+  });
+
   imageInput.addEventListener('change', () => {
-    const label = imageInput.previousElementSibling;
-    const span = label.querySelector('span');
     if (imageInput.files && imageInput.files[0]) {
-      span.textContent = imageInput.files[0].name;
+      dropzoneText.textContent = imageInput.files[0].name;
     }
   });
 </script>

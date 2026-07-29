@@ -17,6 +17,7 @@ SECTIONS = {
         "icon_bg": "bg-dulces-100",
         "icon_text": "text-dulces-600",
         "accent_shadow": "shadow-dulces-600/25 hover:shadow-dulces-600/35",
+        "stripe_bg": "bg-[repeating-linear-gradient(135deg,#FFE7DF_0px,#FFE7DF_10px,#ffffff_10px,#ffffff_20px)]",
     },
     "tecnologia": {
         "label": "Tecnologia",
@@ -33,6 +34,7 @@ SECTIONS = {
         "icon_bg": "bg-tecnologia-100",
         "icon_text": "text-tecnologia-600",
         "accent_shadow": "shadow-tecnologia-600/25 hover:shadow-tecnologia-600/35",
+        "stripe_bg": "bg-[repeating-linear-gradient(135deg,#DFF3F3_0px,#DFF3F3_10px,#ffffff_10px,#ffffff_20px)]",
     },
 }
 

@@ -50,6 +50,17 @@ def section_view(section):
     )
 
 
+@bp.route("/producto/<int:product_id>")
+def product_detail(product_id):
+    product = db.get_product(product_id)
+    if not product:
+        return redirect(url_for("main.home"))
+    is_admin = session.get("is_admin", False)
+    if not product["for_sale"] and not is_admin:
+        return redirect(url_for("main.section_view", section=product["section"]))
+    return render_template("product_detail.html", product=product, section=product["section"])
+
+
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":

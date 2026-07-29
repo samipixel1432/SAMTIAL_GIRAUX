@@ -7,17 +7,33 @@ module.exports = {
         sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
       },
       colors: {
+        // Warm neutral scale (replaces Tailwind's default cool "slate"), derived from the
+        // Mi Tienda Mobile App design (oklch, hue ~50-60) so every existing slate-* class
+        // across the templates picks up the new palette without touching each file.
+        slate: {
+          50: "#FCF5F0",
+          100: "#F8F0EA",
+          200: "#E2D9D2",
+          300: "#C6BBB4",
+          400: "#9F9690",
+          500: "#72665F",
+          600: "#564A43",
+          700: "#41352F",
+          800: "#302621",
+          900: "#251A15",
+        },
+        canvas: "#EEE6E0",
         dulces: {
-          50: "#FFF1F2",
-          100: "#FFE4E6",
-          600: "#E11D48",
-          700: "#BE123C",
+          50: "#FFE7DF",
+          100: "#FFE7DF",
+          600: "#CB4A2A",
+          700: "#AF2F09",
         },
         tecnologia: {
-          50: "#EEF2FF",
-          100: "#E0E7FF",
-          600: "#4F46E5",
-          700: "#4338CA",
+          50: "#DFF3F3",
+          100: "#DFF3F3",
+          600: "#008687",
+          700: "#006E70",
         },
       },
       boxShadow: {
