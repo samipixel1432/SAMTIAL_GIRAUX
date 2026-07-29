@@ -4,40 +4,53 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Mi Tienda{% endblock %}</title>
+  <script>
+    (() => {
+      const storedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
 </head>
-<body class="flex min-h-dvh flex-col font-sans text-slate-900 antialiased">
+<body class="flex min-h-dvh flex-col font-sans text-slate-900 antialiased transition-colors duration-300 dark:text-slate-100">
   {% from "_icons.html" import icon %}
 
   <div id="mouse-grid" class="pointer-events-none fixed inset-0 -z-10" aria-hidden="true"></div>
 
-  <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+  <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-      <a href="{{ url_for('main.home') }}" class="logo-wiggle flex items-center gap-2 text-slate-900">
+      <a href="{{ url_for('main.home') }}" class="logo-wiggle flex items-center gap-2 text-slate-900 dark:text-slate-50">
         {{ icon('shopping-bag', 'w-6 h-6') }}
         <span class="text-lg font-semibold tracking-tight">Mi Tienda</span>
       </a>
       <nav class="flex items-center gap-2">
+        <button type="button" id="theme-toggle" class="icon-btn" aria-label="Cambiar tema" aria-pressed="false">
+          <span class="dark:hidden">{{ icon('moon', 'w-4 h-4') }}</span>
+          <span class="hidden dark:inline">{{ icon('sun', 'w-4 h-4') }}</span>
+        </button>
         {% if is_admin %}
-          <a href="{{ url_for('main.manage_subcategories') }}" class="top-pill text-slate-600 hover:bg-slate-100">
+          <a href="{{ url_for('main.manage_subcategories') }}" class="top-pill text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">
             {{ icon('tag', 'w-4 h-4') }}
             <span class="hidden sm:inline">Subcategorias</span>
           </a>
-          <a href="{{ url_for('main.add_product') }}" class="top-pill bg-slate-900 text-white hover:bg-slate-700">
+          <a href="{{ url_for('main.add_product') }}" class="top-pill bg-slate-900 text-white hover:bg-slate-700 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
             {{ icon('plus', 'w-4 h-4') }}
             <span class="hidden sm:inline">Producto</span>
           </a>
           <form action="{{ url_for('main.logout') }}" method="post">
-            <button type="submit" class="top-pill text-slate-600 hover:bg-slate-100" aria-label="Cerrar sesion">
+            <button type="submit" class="top-pill text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Cerrar sesion">
               {{ icon('logout', 'w-4 h-4') }}
               <span class="hidden sm:inline">Salir</span>
             </button>
           </form>
         {% else %}
-          <a href="{{ url_for('main.login') }}" class="top-pill border border-slate-300 text-slate-700 hover:bg-slate-50">
+          <a href="{{ url_for('main.login') }}" class="top-pill border border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
             {{ icon('lock', 'w-4 h-4') }}
             <span>Administrar</span>
           </a>
@@ -63,9 +76,9 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="border-t border-slate-200">
+  <footer class="border-t border-slate-200 dark:border-slate-800">
     <div class="mx-auto flex max-w-6xl flex-col items-center gap-1 px-4 py-8 text-center sm:px-6">
-      <div class="flex items-center gap-2 text-slate-700">
+      <div class="flex items-center gap-2 text-slate-700 dark:text-slate-200">
         {{ icon('shopping-bag', 'w-5 h-5') }}
         <span class="font-semibold">Mi Tienda</span>
       </div>
@@ -74,6 +87,19 @@
   </footer>
 
   <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      const syncThemeButton = () => {
+        themeToggle.setAttribute('aria-pressed', document.documentElement.classList.contains('dark'));
+      };
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        syncThemeButton();
+      });
+      syncThemeButton();
+    }
+
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const mouseGrid = document.getElementById('mouse-grid');
       if (mouseGrid && window.matchMedia('(pointer: fine)').matches) {

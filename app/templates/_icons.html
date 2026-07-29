@@ -67,6 +67,18 @@
 {%- elif name == 'exclamation-triangle' %}
   <path d="M12 3l10 18H2L12 3Z"></path>
   <line x1="12" y1="9" x2="12" y2="14"></line>
+{%- elif name == 'sun' %}
+  <circle cx="12" cy="12" r="4"></circle>
+  <line x1="12" y1="2.5" x2="12" y2="5"></line>
+  <line x1="12" y1="19" x2="12" y2="21.5"></line>
+  <line x1="4.5" y1="4.5" x2="6.25" y2="6.25"></line>
+  <line x1="17.75" y1="17.75" x2="19.5" y2="19.5"></line>
+  <line x1="2.5" y1="12" x2="5" y2="12"></line>
+  <line x1="19" y1="12" x2="21.5" y2="12"></line>
+  <line x1="4.5" y1="19.5" x2="6.25" y2="17.75"></line>
+  <line x1="17.75" y1="6.25" x2="19.5" y2="4.5"></line>
+{%- elif name == 'moon' %}
+  <path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5Z"></path>
 {%- endif %}
 </svg>
 {% endmacro %}
