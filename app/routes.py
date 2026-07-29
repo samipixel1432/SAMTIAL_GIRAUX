@@ -36,10 +36,18 @@ def section_view(section):
     if section not in SECTIONS:
         return redirect(url_for("main.home"))
     is_admin = session.get("is_admin", False)
-    products = db.list_products(section=section)
+    active_sub = request.args.get("sub") or None
+    products = db.list_products(section=section, subcategory=active_sub)
     if not is_admin:
         products = [p for p in products if p["for_sale"]]
-    return render_template("section.html", section=section, products=products)
+    subcategories = db.list_subcategories(section)
+    return render_template(
+        "section.html",
+        section=section,
+        products=products,
+        subcategories=subcategories,
+        active_sub=active_sub,
+    )
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -66,6 +74,7 @@ def add_product():
     if request.method == "POST":
         name = request.form.get("name", "").strip()
         section = request.form.get("section")
+        subcategory = request.form.get("subcategory", "").strip()
         cost_price = float(request.form.get("cost_price") or 0)
         sale_price = float(request.form.get("sale_price") or 0)
         quantity = int(request.form.get("quantity") or 0)
@@ -74,17 +83,17 @@ def add_product():
 
         if not name or section not in SECTIONS:
             flash("Completa el nombre y la seccion.")
-            return render_template("product_form.html", mode="add", product=request.form)
+            return render_template("product_form.html", mode="add", product=request.form, existing_subcategories=[])
 
         image_url = None
         if image and image.filename:
             image_url = upload_product_image(image)
 
-        db.create_product(name, section, image_url, cost_price, sale_price, quantity, for_sale)
+        db.create_product(name, section, subcategory, image_url, cost_price, sale_price, quantity, for_sale)
         flash(f'"{name}" fue agregado.')
         return redirect(url_for("main.section_view", section=section))
 
-    return render_template("product_form.html", mode="add", product=None)
+    return render_template("product_form.html", mode="add", product=None, existing_subcategories=[])
 
 
 @bp.route("/admin/precio-sugerido")
@@ -93,6 +102,15 @@ def suggested_price():
     section = request.args.get("section")
     cost_price = float(request.args.get("cost_price") or 0)
     return {"recommended": recommended_price(section, cost_price)}
+
+
+@bp.route("/admin/subcategorias")
+@admin_required
+def subcategories_for_section():
+    section = request.args.get("section")
+    if section not in SECTIONS:
+        return {"subcategories": []}
+    return {"subcategories": db.list_subcategories(section)}
 
 
 @bp.route("/admin/editar/<int:product_id>", methods=["GET", "POST"])
@@ -105,6 +123,7 @@ def edit_product(product_id):
     if request.method == "POST":
         name = request.form.get("name", "").strip()
         section = request.form.get("section")
+        subcategory = request.form.get("subcategory", "").strip()
         cost_price = float(request.form.get("cost_price") or 0)
         sale_price = float(request.form.get("sale_price") or 0)
         quantity = int(request.form.get("quantity") or 0)
@@ -115,11 +134,12 @@ def edit_product(product_id):
         if image and image.filename:
             image_url = upload_product_image(image)
 
-        db.update_product(product_id, name, section, image_url, cost_price, sale_price, quantity, for_sale)
+        db.update_product(product_id, name, section, subcategory, image_url, cost_price, sale_price, quantity, for_sale)
         flash(f'"{name}" fue actualizado.')
         return redirect(url_for("main.section_view", section=section))
 
-    return render_template("product_form.html", mode="edit", product=product)
+    existing = db.list_subcategories(product["section"])
+    return render_template("product_form.html", mode="edit", product=product, existing_subcategories=existing)
 
 
 @bp.route("/admin/eliminar/<int:product_id>", methods=["POST"])

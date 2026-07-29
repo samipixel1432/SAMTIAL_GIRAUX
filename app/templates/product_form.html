@@ -26,6 +26,19 @@
     </div>
 
     <div>
+      <label for="subcategory" class="field-label">Subcategoria <span class="font-normal text-slate-400">(opcional)</span></label>
+      <input type="text" name="subcategory" id="subcategory" list="subcategory-options" class="field-input focus:ring-slate-900"
+             placeholder="Ej: Mexicanos, Chocolates..."
+             value="{{ product.subcategory if product and product.subcategory else '' }}">
+      <datalist id="subcategory-options">
+        {% for sub in existing_subcategories %}
+          <option value="{{ sub }}"></option>
+        {% endfor %}
+      </datalist>
+      <p class="mt-1 text-xs text-slate-400">Escribe una nueva o elige una existente para agrupar productos.</p>
+    </div>
+
+    <div>
       <label for="image" class="field-label">Foto del producto</label>
       <label for="image" class="flex cursor-pointer flex-col items-center gap-2 rounded-md border border-dashed border-slate-300 px-4 py-8 text-center text-slate-500 hover:border-slate-400 hover:bg-slate-50">
         {{ icon('camera', 'w-7 h-7 text-slate-400') }}
@@ -97,6 +110,23 @@
   sectionSelect.addEventListener('change', updateRecommendation);
   costInput.addEventListener('input', updateRecommendation);
   updateRecommendation();
+
+  const subcategoryOptions = document.getElementById('subcategory-options');
+  sectionSelect.addEventListener('change', () => {
+    const section = sectionSelect.value;
+    if (!section) return;
+    fetch(`/admin/subcategorias?section=${encodeURIComponent(section)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        subcategoryOptions.innerHTML = '';
+        (data.subcategories || []).forEach((sub) => {
+          const opt = document.createElement('option');
+          opt.value = sub;
+          subcategoryOptions.appendChild(opt);
+        });
+      })
+      .catch(() => {});
+  });
 
   imageInput.addEventListener('change', () => {
     const label = imageInput.previousElementSibling;

@@ -15,6 +15,21 @@
   <h1 class="text-2xl font-semibold tracking-tight text-slate-900">{{ info.label }}</h1>
 </div>
 
+{% if subcategories %}
+<div class="mb-6 flex flex-wrap gap-2">
+  <a href="{{ url_for('main.section_view', section=section) }}"
+     class="badge border {% if not active_sub %}{{ info.accent_bg }} border-transparent text-white{% else %}border-slate-300 text-slate-600 hover:bg-slate-50{% endif %}">
+    Todos
+  </a>
+  {% for sub in subcategories %}
+    <a href="{{ url_for('main.section_view', section=section, sub=sub) }}"
+       class="badge border {% if active_sub == sub %}{{ info.accent_bg }} border-transparent text-white{% else %}border-slate-300 text-slate-600 hover:bg-slate-50{% endif %}">
+      {{ sub }}
+    </a>
+  {% endfor %}
+</div>
+{% endif %}
+
 {% if products %}
 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
   {% for p in products %}
@@ -28,6 +43,9 @@
     {% endif %}
 
     <div class="p-3.5">
+      {% if p.subcategory %}
+        <p class="text-xs font-medium uppercase tracking-wide text-slate-400">{{ p.subcategory }}</p>
+      {% endif %}
       <h3 class="truncate text-sm font-medium text-slate-900">{{ p.name }}</h3>
       <p class="mt-1 text-base font-semibold {{ info.accent_text }}">${{ "%.2f"|format(p.sale_price) }}</p>
 

@@ -21,17 +21,34 @@ def init_db():
         conn.commit()
 
 
-def list_products(section=None):
+def list_products(section=None, subcategory=None):
     with _connect() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            query = "SELECT * FROM products WHERE 1=1"
+            params = []
             if section:
-                cur.execute(
-                    "SELECT * FROM products WHERE section = %s ORDER BY created_at DESC",
-                    [section],
-                )
-            else:
-                cur.execute("SELECT * FROM products ORDER BY created_at DESC")
+                query += " AND section = %s"
+                params.append(section)
+            if subcategory:
+                query += " AND subcategory = %s"
+                params.append(subcategory)
+            query += " ORDER BY created_at DESC"
+            cur.execute(query, params)
             return [dict(row) for row in cur.fetchall()]
+
+
+def list_subcategories(section):
+    with _connect() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT DISTINCT subcategory FROM products
+                WHERE section = %s AND subcategory IS NOT NULL AND subcategory != ''
+                ORDER BY subcategory
+                """,
+                [section],
+            )
+            return [row[0] for row in cur.fetchall()]
 
 
 def get_product(product_id):
@@ -42,29 +59,30 @@ def get_product(product_id):
             return dict(row) if row else None
 
 
-def create_product(name, section, image_url, cost_price, sale_price, quantity, for_sale):
+def create_product(name, section, subcategory, image_url, cost_price, sale_price, quantity, for_sale):
     with _connect() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
-                INSERT INTO products (name, section, image_url, cost_price, sale_price, quantity, for_sale)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO products (name, section, subcategory, image_url, cost_price, sale_price, quantity, for_sale)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """,
-                [name, section, image_url, cost_price, sale_price, quantity, bool(for_sale)],
+                [name, section, subcategory or None, image_url, cost_price, sale_price, quantity, bool(for_sale)],
             )
         conn.commit()
 
 
-def update_product(product_id, name, section, image_url, cost_price, sale_price, quantity, for_sale):
+def update_product(product_id, name, section, subcategory, image_url, cost_price, sale_price, quantity, for_sale):
     with _connect() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
                 UPDATE products
-                SET name = %s, section = %s, image_url = %s, cost_price = %s, sale_price = %s, quantity = %s, for_sale = %s
+                SET name = %s, section = %s, subcategory = %s, image_url = %s, cost_price = %s,
+                    sale_price = %s, quantity = %s, for_sale = %s
                 WHERE id = %s
                 """,
-                [name, section, image_url, cost_price, sale_price, quantity, bool(for_sale), product_id],
+                [name, section, subcategory or None, image_url, cost_price, sale_price, quantity, bool(for_sale), product_id],
             )
         conn.commit()
 
