@@ -6,6 +6,13 @@
   html {
     font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
+  body {
+    background-color: #eee6e0;
+    background-image:
+      linear-gradient(to right, rgba(37, 26, 21, 0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 26, 21, 0.055) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
 }
 
 @layer components {
@@ -95,6 +102,20 @@
   .magnetic-btn {
     transition: transform 0.2s ease-out;
     will-change: transform;
+  }
+
+  #mouse-grid {
+    background-image:
+      linear-gradient(to right, rgba(37, 26, 21, 0.16) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(37, 26, 21, 0.16) 1px, transparent 1px);
+    background-size: 34px 34px;
+    -webkit-mask-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), black, transparent 70%);
+    mask-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), black, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  #mouse-grid.is-active {
+    opacity: 1;
   }
 }
 
