@@ -6,9 +6,6 @@
   html {
     font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
-  body {
-    @apply bg-stone-50 text-slate-900;
-  }
 }
 
 @layer components {
@@ -56,12 +53,56 @@
     }
   }
   .animate-fade-in-up {
-    animation: fade-in-up 0.5s ease-out both;
+    animation: fade-in-up 0.6s ease-out both;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+  }
+  .animate-float {
+    animation: float 3.2s ease-in-out infinite;
+  }
+  .animate-float.delay-1 { animation-delay: 0.35s; }
+  .animate-float.delay-2 { animation-delay: 0.7s; }
+
+  @keyframes blob-drift-a {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(26px, 18px) scale(1.08); }
+  }
+  @keyframes blob-drift-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-22px, -14px) scale(1.12); }
+  }
+  .animate-blob-a {
+    animation: blob-drift-a 15s ease-in-out infinite;
+  }
+  .animate-blob-b {
+    animation: blob-drift-b 19s ease-in-out infinite;
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-10deg) scale(1.08); }
+    75% { transform: rotate(10deg) scale(1.08); }
+  }
+  .logo-wiggle:hover svg,
+  .logo-wiggle:focus-visible svg {
+    animation: wiggle 0.45s ease-in-out;
+  }
+
+  .tilt-card,
+  .magnetic-btn {
+    transition: transform 0.2s ease-out;
+    will-change: transform;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in-up {
+  .animate-fade-in-up,
+  .animate-float,
+  .animate-blob-a,
+  .animate-blob-b {
     animation: none;
   }
   .card-hover {

@@ -9,12 +9,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
 </head>
-<body class="flex min-h-dvh flex-col bg-white font-sans text-slate-900 antialiased">
+<body class="flex min-h-dvh flex-col bg-stone-50 font-sans text-slate-900 antialiased">
   {% from "_icons.html" import icon %}
 
   <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-      <a href="{{ url_for('main.home') }}" class="flex items-center gap-2 text-slate-900">
+      <a href="{{ url_for('main.home') }}" class="logo-wiggle flex items-center gap-2 text-slate-900">
         {{ icon('shopping-bag', 'w-6 h-6') }}
         <span class="text-lg font-semibold tracking-tight">Mi Tienda</span>
       </a>
@@ -70,5 +70,33 @@
       <p class="text-sm text-slate-400">Dulces y tecnologia, seleccionados con cuidado.</p>
     </div>
   </footer>
+
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.tilt-card').forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = `perspective(700px) rotateY(${x * 7}deg) rotateX(${y * -7}deg) translateY(-4px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+
+      document.querySelectorAll('.magnetic-btn').forEach((btn) => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = '';
+        });
+      });
+    }
+  </script>
 </body>
 </html>
