@@ -22,9 +22,9 @@
     Todos
   </a>
   {% for sub in subcategories %}
-    <a href="{{ url_for('main.section_view', section=section, sub=sub) }}"
-       class="badge border {% if active_sub == sub %}{{ info.accent_bg }} border-transparent text-white{% else %}border-slate-300 text-slate-600 hover:bg-slate-50{% endif %}">
-      {{ sub }}
+    <a href="{{ url_for('main.section_view', section=section, sub=sub.name) }}"
+       class="badge border {% if active_sub == sub.name %}{{ info.accent_bg }} border-transparent text-white{% else %}border-slate-300 text-slate-600 hover:bg-slate-50{% endif %}">
+      {{ sub.name }}
     </a>
   {% endfor %}
 </div>

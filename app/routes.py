@@ -104,13 +104,38 @@ def suggested_price():
     return {"recommended": recommended_price(section, cost_price)}
 
 
-@bp.route("/admin/subcategorias")
+@bp.route("/admin/subcategorias/api")
 @admin_required
-def subcategories_for_section():
+def subcategories_api():
     section = request.args.get("section")
     if section not in SECTIONS:
         return {"subcategories": []}
-    return {"subcategories": db.list_subcategories(section)}
+    return {"subcategories": [s["name"] for s in db.list_subcategories(section)]}
+
+
+@bp.route("/admin/subcategorias", methods=["GET", "POST"])
+@admin_required
+def manage_subcategories():
+    if request.method == "POST":
+        section = request.form.get("section")
+        name = request.form.get("name", "").strip()
+        if section in SECTIONS and name:
+            db.create_subcategory(section, name)
+            flash(f'Subcategoria "{name}" creada en {SECTIONS[section]["label"]}.')
+        else:
+            flash("Escribe un nombre y elige una coleccion.")
+        return redirect(url_for("main.manage_subcategories"))
+
+    by_section = {key: db.list_subcategories(key) for key in SECTIONS}
+    return render_template("subcategories.html", by_section=by_section)
+
+
+@bp.route("/admin/subcategorias/<int:subcategory_id>/eliminar", methods=["POST"])
+@admin_required
+def delete_subcategory(subcategory_id):
+    db.delete_subcategory(subcategory_id)
+    flash("Subcategoria eliminada.")
+    return redirect(url_for("main.manage_subcategories"))
 
 
 @bp.route("/admin/editar/<int:product_id>", methods=["GET", "POST"])

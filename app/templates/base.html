@@ -20,6 +20,10 @@
       </a>
       <nav class="flex items-center gap-2">
         {% if is_admin %}
+          <a href="{{ url_for('main.manage_subcategories') }}" class="top-pill text-slate-600 hover:bg-slate-100">
+            {{ icon('tag', 'w-4 h-4') }}
+            <span class="hidden sm:inline">Subcategorias</span>
+          </a>
           <a href="{{ url_for('main.add_product') }}" class="top-pill bg-slate-900 text-white hover:bg-slate-700">
             {{ icon('plus', 'w-4 h-4') }}
             <span class="hidden sm:inline">Producto</span>

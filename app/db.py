@@ -39,16 +39,40 @@ def list_products(section=None, subcategory=None):
 
 def list_subcategories(section):
     with _connect() as conn:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(
+                "SELECT * FROM subcategories WHERE section = %s ORDER BY name",
+                [section],
+            )
+            return [dict(row) for row in cur.fetchall()]
+
+
+def create_subcategory(section, name):
+    with _connect() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT DISTINCT subcategory FROM products
-                WHERE section = %s AND subcategory IS NOT NULL AND subcategory != ''
-                ORDER BY subcategory
+                INSERT INTO subcategories (section, name) VALUES (%s, %s)
+                ON CONFLICT (section, name) DO NOTHING
                 """,
-                [section],
+                [section, name],
             )
-            return [row[0] for row in cur.fetchall()]
+        conn.commit()
+
+
+def delete_subcategory(subcategory_id):
+    with _connect() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT section, name FROM subcategories WHERE id = %s", [subcategory_id])
+            row = cur.fetchone()
+            if row:
+                section, name = row
+                cur.execute(
+                    "UPDATE products SET subcategory = NULL WHERE section = %s AND subcategory = %s",
+                    [section, name],
+                )
+                cur.execute("DELETE FROM subcategories WHERE id = %s", [subcategory_id])
+        conn.commit()
 
 
 def get_product(product_id):
