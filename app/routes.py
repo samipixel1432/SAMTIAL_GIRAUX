@@ -61,6 +61,48 @@ def product_detail(product_id):
     return render_template("product_detail.html", product=product, section=product["section"])
 
 
+@bp.route("/admin/finanzas")
+@admin_required
+def finances():
+    products = db.list_products()
+
+    total_cost_value = sum(p["cost_price"] * p["quantity"] for p in products)
+    total_sale_value = sum(p["sale_price"] * p["quantity"] for p in products)
+    potential_profit = total_sale_value - total_cost_value
+    avg_margin = (potential_profit / total_cost_value * 100) if total_cost_value else 0
+
+    by_section = {}
+    for key in SECTIONS:
+        section_products = [p for p in products if p["section"] == key]
+        cost_value = sum(p["cost_price"] * p["quantity"] for p in section_products)
+        sale_value = sum(p["sale_price"] * p["quantity"] for p in section_products)
+        by_section[key] = {
+            "count": len(section_products),
+            "cost_value": cost_value,
+            "sale_value": sale_value,
+            "profit": sale_value - cost_value,
+        }
+
+    low_stock = sorted((p for p in products if p["quantity"] <= 5), key=lambda p: p["quantity"])[:8]
+    top_profit = sorted(
+        products,
+        key=lambda p: (p["sale_price"] - p["cost_price"]) * p["quantity"],
+        reverse=True,
+    )[:5]
+
+    return render_template(
+        "finances.html",
+        total_products=len(products),
+        total_cost_value=total_cost_value,
+        total_sale_value=total_sale_value,
+        potential_profit=potential_profit,
+        avg_margin=avg_margin,
+        by_section=by_section,
+        low_stock=low_stock,
+        top_profit=top_profit,
+    )
+
+
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":

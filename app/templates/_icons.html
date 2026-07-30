@@ -79,6 +79,14 @@
   <line x1="17.75" y1="6.25" x2="19.5" y2="4.5"></line>
 {%- elif name == 'moon' %}
   <path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5Z"></path>
+{%- elif name == 'chart-bar' %}
+  <line x1="4" y1="20" x2="20" y2="20"></line>
+  <rect x="6" y="13" width="3.2" height="7" rx="0.5"></rect>
+  <rect x="10.8" y="9" width="3.2" height="11" rx="0.5"></rect>
+  <rect x="15.6" y="5" width="3.2" height="15" rx="0.5"></rect>
+{%- elif name == 'trending-up' %}
+  <polyline points="4 16 10 10 14 14 20 6"></polyline>
+  <polyline points="14 6 20 6 20 12"></polyline>
 {%- endif %}
 </svg>
 {% endmacro %}

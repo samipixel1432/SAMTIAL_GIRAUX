@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Finanzas{% endblock %}
+{% block content %}
+<a href="{{ url_for('main.home') }}" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700">
+  {{ icon('arrow-left', 'w-4 h-4') }}
+  Inicio
+</a>
+
+<div class="mt-3 mb-2 flex items-center gap-3">
+  <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
+    {{ icon('chart-bar', 'w-6 h-6') }}
+  </span>
+  <h1 class="text-2xl font-bold tracking-tight text-slate-900">Finanzas</h1>
+</div>
+<p class="mb-8 text-sm text-slate-500">Resumen del inventario actual ({{ total_products }} productos). Son valores potenciales segun costo, precio y cantidad cargados &mdash; no un historial de ventas reales.</p>
+
+<div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+  <div class="card p-5">
+    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+      {{ icon('tag', 'w-4 h-4') }}
+    </span>
+    <p class="mt-3 text-xs font-medium uppercase tracking-wide text-slate-400">Valor en costo</p>
+    <p class="mt-1 text-xl font-extrabold text-slate-900">${{ "%.2f"|format(total_cost_value) }}</p>
+  </div>
+  <div class="card p-5">
+    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+      {{ icon('cube', 'w-4 h-4') }}
+    </span>
+    <p class="mt-3 text-xs font-medium uppercase tracking-wide text-slate-400">Valor en venta</p>
+    <p class="mt-1 text-xl font-extrabold text-slate-900">${{ "%.2f"|format(total_sale_value) }}</p>
+  </div>
+  <div class="card p-5">
+    <span class="flex h-9 w-9 items-center justify-center rounded-lg {% if potential_profit >= 0 %}bg-emerald-50 text-emerald-600{% else %}bg-red-50 text-red-600{% endif %}">
+      {{ icon('trending-up', 'w-4 h-4') }}
+    </span>
+    <p class="mt-3 text-xs font-medium uppercase tracking-wide text-slate-400">Ganancia potencial</p>
+    <p class="mt-1 text-xl font-extrabold {% if potential_profit >= 0 %}text-emerald-600{% else %}text-red-600{% endif %}">${{ "%.2f"|format(potential_profit) }}</p>
+  </div>
+  <div class="card p-5">
+    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+      {{ icon('light-bulb', 'w-4 h-4') }}
+    </span>
+    <p class="mt-3 text-xs font-medium uppercase tracking-wide text-slate-400">Margen promedio</p>
+    <p class="mt-1 text-xl font-extrabold text-slate-900">{{ "%.1f"|format(avg_margin) }}%</p>
+  </div>
+</div>
+
+<h2 class="mt-10 mb-4 text-lg font-bold tracking-tight text-slate-900">Por coleccion</h2>
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  {% for key, info in sections.items() %}
+    {% set s = by_section.get(key, {"count": 0, "cost_value": 0, "sale_value": 0, "profit": 0}) %}
+    <div class="card p-5">
+      <div class="flex items-center gap-2.5">
+        <span class="flex h-9 w-9 items-center justify-center rounded-lg {{ info.icon_bg }} {{ info.icon_text }}">
+          {{ icon(info.icon, 'w-5 h-5') }}
+        </span>
+        <div>
+          <b class="block text-sm font-semibold text-slate-900">{{ info.label }}</b>
+          <span class="text-xs text-slate-500">{{ s.count }} productos</span>
+        </div>
+      </div>
+      <div class="mt-4 grid grid-cols-3 gap-2 border-t border-slate-100 pt-4 text-center">
+        <div>
+          <p class="text-xs text-slate-400">Costo</p>
+          <p class="mt-0.5 text-sm font-semibold text-slate-900">${{ "%.2f"|format(s.cost_value) }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400">Venta</p>
+          <p class="mt-0.5 text-sm font-semibold text-slate-900">${{ "%.2f"|format(s.sale_value) }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400">Ganancia</p>
+          <p class="mt-0.5 text-sm font-semibold {{ info.accent_text }}">${{ "%.2f"|format(s.profit) }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
+  <div>
+    <h2 class="mb-4 flex items-center gap-1.5 text-lg font-bold tracking-tight text-slate-900">
+      {{ icon('exclamation-triangle', 'w-4 h-4 text-amber-500') }}
+      Stock bajo
+    </h2>
+    {% if low_stock %}
+      <div class="card divide-y divide-slate-100">
+        {% for p in low_stock %}
+          <a href="{{ url_for('main.edit_product', product_id=p.id) }}" class="flex items-center justify-between gap-3 p-3.5 hover:bg-slate-50">
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-900">{{ p.name }}</p>
+              <p class="text-xs text-slate-400">{{ sections[p.section].label }}</p>
+            </div>
+            <span class="badge shrink-0 {% if p.quantity == 0 %}bg-red-50 text-red-600{% else %}bg-amber-50 text-amber-600{% endif %}">
+              {{ p.quantity }} en stock
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="card p-6 text-center text-sm text-slate-500">Ningun producto con stock bajo.</div>
+    {% endif %}
+  </div>
+
+  <div>
+    <h2 class="mb-4 text-lg font-bold tracking-tight text-slate-900">Mayor ganancia potencial</h2>
+    {% if top_profit %}
+      <div class="card divide-y divide-slate-100">
+        {% for p in top_profit %}
+          {% set info = sections[p.section] %}
+          <a href="{{ url_for('main.product_detail', product_id=p.id) }}" class="flex items-center justify-between gap-3 p-3.5 hover:bg-slate-50">
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-900">{{ p.name }}</p>
+              <p class="text-xs text-slate-400">{{ info.label }} &middot; {{ p.quantity }} en stock</p>
+            </div>
+            <span class="shrink-0 text-sm font-semibold {{ info.accent_text }}">
+              ${{ "%.2f"|format((p.sale_price - p.cost_price) * p.quantity) }}
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="card p-6 text-center text-sm text-slate-500">Todavia no hay productos cargados.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
