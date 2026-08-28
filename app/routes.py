@@ -8,6 +8,8 @@ from app.images import upload_product_image
 from app.sections import SECTIONS, recommended_price
 
 bp = Blueprint("main", __name__)
+BRAND_NAME = "LUZURY STORE"
+BRAND_LOGO = "img/luzury-store-logo.jpeg"
 
 
 def admin_required(view):
@@ -22,7 +24,12 @@ def admin_required(view):
 
 @bp.context_processor
 def inject_globals():
-    return {"sections": SECTIONS, "is_admin": session.get("is_admin", False)}
+    return {
+        "sections": SECTIONS,
+        "is_admin": session.get("is_admin", False),
+        "brand_name": BRAND_NAME,
+        "brand_logo": BRAND_LOGO,
+    }
 
 
 @bp.route("/")

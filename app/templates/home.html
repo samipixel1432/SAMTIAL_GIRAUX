@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 {% from "_icons.html" import icon %}
-{% block title %}Mi Tienda{% endblock %}
+{% block title %}{{ brand_name }}{% endblock %}
 {% block content %}
 <section class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-[0_2px_4px_rgba(37,26,21,0.06),0_28px_56px_rgba(37,26,21,0.16)] sm:px-12 sm:py-24">
   <div class="animate-blob-a pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-dulces-600/10 blur-3xl"></div>
   <div class="animate-blob-b pointer-events-none absolute -bottom-28 -right-24 h-80 w-80 rounded-full bg-tecnologia-600/10 blur-3xl"></div>
 
   <div class="relative">
-    <p class="animate-fade-in-up text-sm font-semibold uppercase tracking-widest text-slate-500" style="animation-delay:0ms">Tienda online</p>
+    <img src="{{ url_for('static', filename=brand_logo) }}" alt="{{ brand_name }} logo" class="animate-fade-in-up mx-auto h-28 w-28 rounded-full border border-slate-900 object-cover shadow-lg" style="animation-delay:0ms">
+    <p class="animate-fade-in-up mt-5 text-sm font-semibold uppercase tracking-widest text-slate-500" style="animation-delay:70ms">{{ brand_name }}</p>
     <h1 class="animate-fade-in-up text-balance mx-auto mt-4 max-w-2xl text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl" style="animation-delay:90ms">
-      Todo lo que buscas, en un solo lugar
+      Estilo, tecnologia y detalles en un solo lugar
     </h1>
     <p class="animate-fade-in-up mx-auto mt-5 max-w-xl text-base text-slate-500 sm:text-lg" style="animation-delay:180ms">
-      Dulces para disfrutar y tecnologia para el dia a dia. Seleccionamos cada
-      producto con cuidado y le ponemos un precio justo.
+      En LUZURY STORE seleccionamos productos para el dia a dia con una imagen
+      moderna, buenos precios y una experiencia facil de comprar.
     </p>
     <div class="animate-fade-in-up mt-9 flex flex-wrap items-center justify-center gap-3" style="animation-delay:270ms">
       {% for key, info in sections.items() %}
@@ -28,7 +29,7 @@
 </section>
 
 <section class="mt-16">
-  <p class="text-center text-sm font-semibold uppercase tracking-widest text-slate-500">Por que comprar con nosotros</p>
+  <p class="text-center text-sm font-semibold uppercase tracking-widest text-slate-500">Por que comprar en {{ brand_name }}</p>
   <div class="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-3">
     <div class="card card-hover tilt-card animate-float border-dulces-600/30 p-4 text-center shadow-[0_0_0_1px_rgba(203,74,42,0.18),0_0_22px_-6px_rgba(203,74,42,0.55)] transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(203,74,42,0.35),0_0_30px_-4px_rgba(203,74,42,0.75)] sm:text-left">
       <span class="mx-auto flex h-9 w-9 items-center justify-center rounded-lg bg-dulces-100 text-dulces-600 sm:mx-0">

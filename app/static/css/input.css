@@ -143,6 +143,8 @@
     25% { transform: rotate(-10deg) scale(1.08); }
     75% { transform: rotate(10deg) scale(1.08); }
   }
+  .logo-wiggle:hover img,
+  .logo-wiggle:focus-visible img,
   .logo-wiggle:hover svg,
   .logo-wiggle:focus-visible svg {
     animation: wiggle 0.45s ease-in-out;

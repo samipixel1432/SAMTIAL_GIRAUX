@@ -1,4 +1,4 @@
-# Mi Tienda
+# LUZURY STORE
 
 Tienda de ventas (dulces, tecnología y las secciones que quieras agregar) hecha en
 Flask, con base de datos Neon (Postgres en la nube) y fotos en Cloudinary. Pensada
@@ -64,7 +64,7 @@ git push -u origin main
    (`DATABASE_URL`, `CLOUDINARY_CLOUD_NAME`,
    `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_PASSWORD`, `FLASK_SECRET_KEY`).
 3. Presiona **Deploy**. En 1-2 minutos tendrás un link público (ej.
-   `https://mi-tienda.vercel.app`) que funciona perfecto desde el celular.
+   `https://luzury-store.vercel.app`) que funciona perfecto desde el celular.
 
 ## Cómo se usa
 

@@ -9,7 +9,7 @@ module.exports = {
       },
       colors: {
         // Warm neutral scale (replaces Tailwind's default cool "slate"), derived from the
-        // Mi Tienda Mobile App design (oklch, hue ~50-60) so every existing slate-* class
+        // LUZURY STORE design (oklch, hue ~50-60) so every existing slate-* class
         // across the templates picks up the new palette without touching each file.
         slate: {
           50: "#FCF5F0",
