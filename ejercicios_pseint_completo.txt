@@ -1,0 +1,102 @@
+Algoritmo Zona_Verde
+	// Contrato
+	// Entrada: base y altura del terreno triangular.
+	// Proceso: calcular el area con la formula (base * altura) / 2.
+	// Salida: area de la zona verde.
+	
+	Definir base, altura, area Como Real
+	
+	Escribir "Ingrese la base del terreno:"
+	Leer base
+	
+	Escribir "Ingrese la altura del terreno:"
+	Leer altura
+	
+	area <- (base * altura) / 2
+	
+	Escribir "El area de la zona verde es: ", area
+FinAlgoritmo
+
+
+Algoritmo Adecuacion_Salon
+	// Contrato
+	// Entrada: largo y ancho del salon.
+	// Proceso: calcular el area y el perimetro del rectangulo.
+	// Salida: area del salon y perimetro para el zocalo.
+	
+	Definir largo, ancho, area, perimetro Como Real
+	
+	Escribir "Ingrese el largo del salon:"
+	Leer largo
+	
+	Escribir "Ingrese el ancho del salon:"
+	Leer ancho
+	
+	area <- largo * ancho
+	perimetro <- 2 * (largo + ancho)
+	
+	Escribir "El area del salon es: ", area
+	Escribir "El perimetro del salon es: ", perimetro
+FinAlgoritmo
+
+
+Algoritmo Recorrido_Vehiculo
+	// Contrato
+	// Entrada: velocidad en kilometros por hora y tiempo en horas.
+	// Proceso: calcular la distancia multiplicando velocidad por tiempo.
+	// Salida: distancia recorrida en kilometros.
+	
+	Definir velocidad, tiempo, distancia Como Real
+	
+	Escribir "Ingrese la velocidad del vehiculo en km/h:"
+	Leer velocidad
+	
+	Escribir "Ingrese el tiempo de recorrido en horas:"
+	Leer tiempo
+	
+	distancia <- velocidad * tiempo
+	
+	Escribir "La distancia recorrida es: ", distancia, " kilometros"
+FinAlgoritmo
+
+
+Algoritmo Fuente_Circular
+	// Contrato
+	// Entrada: radio de la fuente circular.
+	// Proceso: calcular area y perimetro usando 3.1416 como valor de pi.
+	// Salida: area de la superficie y perimetro de la fuente.
+	
+	Definir radio, area, perimetro Como Real
+	
+	Escribir "Ingrese el radio de la fuente:"
+	Leer radio
+	
+	area <- 3.1416 * radio * radio
+	perimetro <- 2 * 3.1416 * radio
+	
+	Escribir "El area de la fuente es: ", area
+	Escribir "El perimetro de la fuente es: ", perimetro
+FinAlgoritmo
+
+
+Algoritmo Desempeno_Academico
+	// Contrato
+	// Entrada: tres calificaciones del estudiante.
+	// Proceso: sumar las tres calificaciones y dividir el resultado entre 3.
+	// Salida: promedio obtenido por el estudiante.
+	
+	Definir nota1, nota2, nota3, promedio Como Real
+	
+	Escribir "Ingrese la primera calificacion:"
+	Leer nota1
+	
+	Escribir "Ingrese la segunda calificacion:"
+	Leer nota2
+	
+	Escribir "Ingrese la tercera calificacion:"
+	Leer nota3
+	
+	promedio <- (nota1 + nota2 + nota3) / 3
+	
+	Escribir "El promedio del estudiante es: ", promedio
+FinAlgoritmo
