@@ -91,12 +91,43 @@
   }
   .dark .from-dulces-50 { --tw-gradient-from: rgb(203 74 42 / 0.14) var(--tw-gradient-from-position); --tw-gradient-to: rgb(203 74 42 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
   .dark .from-tecnologia-50 { --tw-gradient-from: rgb(0 134 135 / 0.14) var(--tw-gradient-from-position); --tw-gradient-to: rgb(0 134 135 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .from-amber-50 { --tw-gradient-from: rgb(245 158 11 / 0.16) var(--tw-gradient-from-position); --tw-gradient-to: rgb(245 158 11 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .from-emerald-50 { --tw-gradient-from: rgb(5 150 105 / 0.16) var(--tw-gradient-from-position); --tw-gradient-to: rgb(5 150 105 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .from-sky-50 { --tw-gradient-from: rgb(2 132 199 / 0.16) var(--tw-gradient-from-position); --tw-gradient-to: rgb(2 132 199 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .from-rose-50 { --tw-gradient-from: rgb(225 29 72 / 0.16) var(--tw-gradient-from-position); --tw-gradient-to: rgb(225 29 72 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .from-violet-50 { --tw-gradient-from: rgb(124 58 237 / 0.16) var(--tw-gradient-from-position); --tw-gradient-to: rgb(124 58 237 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .from-indigo-50 { --tw-gradient-from: rgb(79 70 229 / 0.16) var(--tw-gradient-from-position); --tw-gradient-to: rgb(79 70 229 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .from-red-50 { --tw-gradient-from: rgb(220 38 38 / 0.16) var(--tw-gradient-from-position); --tw-gradient-to: rgb(220 38 38 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
   .dark .to-canvas { --tw-gradient-to: #0f172a var(--tw-gradient-to-position); }
   .dark .bg-\[repeating-linear-gradient\(135deg\2c \#FFE7DF_0px\2c \#FFE7DF_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
     background-image: repeating-linear-gradient(135deg, rgb(203 74 42 / 0.18) 0px, rgb(203 74 42 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
   }
   .dark .bg-\[repeating-linear-gradient\(135deg\2c \#DFF3F3_0px\2c \#DFF3F3_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
     background-image: repeating-linear-gradient(135deg, rgb(0 134 135 / 0.18) 0px, rgb(0 134 135 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#FEF3C7_0px\2c \#FEF3C7_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(245 158 11 / 0.18) 0px, rgb(245 158 11 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#F8F0EA_0px\2c \#F8F0EA_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(248 240 234 / 0.12) 0px, rgb(248 240 234 / 0.12) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#D1FAE5_0px\2c \#D1FAE5_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(5 150 105 / 0.18) 0px, rgb(5 150 105 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#E0F2FE_0px\2c \#E0F2FE_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(2 132 199 / 0.18) 0px, rgb(2 132 199 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#FFE4E6_0px\2c \#FFE4E6_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(225 29 72 / 0.18) 0px, rgb(225 29 72 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#EDE9FE_0px\2c \#EDE9FE_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(124 58 237 / 0.18) 0px, rgb(124 58 237 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#E0E7FF_0px\2c \#E0E7FF_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(79 70 229 / 0.18) 0px, rgb(79 70 229 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
+  }
+  .dark .bg-\[repeating-linear-gradient\(135deg\2c \#FEE2E2_0px\2c \#FEE2E2_10px\2c \#ffffff_10px\2c \#ffffff_20px\)\] {
+    background-image: repeating-linear-gradient(135deg, rgb(220 38 38 / 0.18) 0px, rgb(220 38 38 / 0.18) 10px, rgb(15 23 42 / 0.95) 10px, rgb(15 23 42 / 0.95) 20px);
   }
 
   @keyframes fade-in-up {

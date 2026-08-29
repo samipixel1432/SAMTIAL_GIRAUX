@@ -31,12 +31,16 @@
     </div>
 
     <div>
-      <label for="style" class="field-label">Estilo</label>
-      <select name="style" id="style" class="field-input focus:ring-slate-900">
+      <span class="field-label">Color</span>
+      <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {% for key, style in category_styles.items() %}
-          <option value="{{ key }}">{{ style.name }}</option>
+          <label class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition-all hover:bg-slate-50 dark:bg-slate-900 dark:text-slate-200">
+            <input type="radio" name="style" value="{{ key }}" class="peer sr-only" {% if loop.first %}checked{% endif %}>
+            <span class="h-4 w-4 shrink-0 rounded-full {{ style.accent_bg }} peer-checked:ring-2 peer-checked:ring-slate-900 peer-checked:ring-offset-2"></span>
+            <span class="truncate">{{ style.name }}</span>
+          </label>
         {% endfor %}
-      </select>
+      </div>
     </div>
 
     <div>
