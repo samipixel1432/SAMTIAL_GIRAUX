@@ -1,4 +1,6 @@
 import os
+import re
+import unicodedata
 from pathlib import Path
 
 import psycopg2
@@ -19,6 +21,44 @@ def init_db():
         with conn.cursor() as cur:
             cur.execute(_SCHEMA_PATH.read_text())
         conn.commit()
+
+
+def _slugify(value):
+    normalized = unicodedata.normalize("NFKD", value)
+    ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
+    slug = re.sub(r"[^a-z0-9]+", "-", ascii_text.lower()).strip("-")
+    return slug or "categoria"
+
+
+def list_categories():
+    with _connect() as conn:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute("SELECT * FROM categories ORDER BY created_at, label")
+            return [dict(row) for row in cur.fetchall()]
+
+
+def create_category(label, icon="shopping-bag", margin=0.30, style="dulces"):
+    base_key = _slugify(label)
+    with _connect() as conn:
+        with conn.cursor() as cur:
+            key = base_key
+            suffix = 2
+            while True:
+                cur.execute("SELECT 1 FROM categories WHERE key = %s", [key])
+                if not cur.fetchone():
+                    break
+                key = f"{base_key}-{suffix}"
+                suffix += 1
+
+            cur.execute(
+                """
+                INSERT INTO categories (key, label, icon, margin, style)
+                VALUES (%s, %s, %s, %s, %s)
+                """,
+                [key, label, icon or "shopping-bag", margin, style or "dulces"],
+            )
+        conn.commit()
+    return key
 
 
 def list_products(section=None, subcategory=None):

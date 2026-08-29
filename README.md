@@ -74,9 +74,8 @@ git push -u origin main
   y ver la recomendación de precio de venta (margen configurable en
   `app/sections.py`: Dulces 45%, Tecnología 20%), editar, ocultar o eliminar.
 
-## Agregar más secciones
+## Agregar más categorias
 
-Edita `app/sections.py` y agrega una clave nueva al diccionario `SECTIONS` con su
-`label`, `emoji` y `margin`. Luego agrega su color en `app/static/css/style.css`
-(busca `.card-dulces` / `.card-tecnologia` como ejemplo) y en la constraint
-`CHECK (section IN (...))` de `schema.sql`.
+Entra como administrador y abre **Categorias**. Desde ahi puedes crear nuevas
+categorias con nombre, icono, estilo visual y margen sugerido para calcular el
+precio de venta.
