@@ -33,6 +33,11 @@ CREATE TABLE IF NOT EXISTS categories (
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS icon TEXT NOT NULL DEFAULT 'shopping-bag';
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS margin NUMERIC NOT NULL DEFAULT 0.30;
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS style TEXT NOT NULL DEFAULT 'dulces';
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT NOW();
+
 INSERT INTO categories (key, label, icon, margin, style)
 VALUES
     ('dulces', 'Dulces', 'gift', 0.45, 'dulces'),
