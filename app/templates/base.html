@@ -31,6 +31,11 @@
         <span class="truncate text-lg font-semibold tracking-tight">{{ brand_name }}</span>
       </a>
       <nav class="flex items-center gap-2">
+        <a href="{{ url_for('main.cart') }}" class="top-pill relative border border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800" aria-label="Ver carrito">
+          {{ icon('shopping-cart', 'w-4 h-4') }}
+          <span class="hidden sm:inline">Carrito</span>
+          <span id="cart-count" class="absolute -right-2 -top-2 hidden min-w-5 rounded-full bg-dulces-600 px-1.5 py-0.5 text-center text-[11px] font-bold leading-none text-white">0</span>
+        </a>
         <button type="button" id="theme-toggle" class="icon-btn" aria-label="Cambiar tema" aria-pressed="false">
           <span class="dark:hidden">{{ icon('moon', 'w-4 h-4') }}</span>
           <span class="hidden dark:inline">{{ icon('sun', 'w-4 h-4') }}</span>
@@ -96,6 +101,137 @@
   </footer>
 
   <script>
+    const STORE_CART_KEY = 'luzury-store-cart';
+    const SELLER_WHATSAPP_NUMBER = '{{ seller_whatsapp_number }}';
+    const STORE_BRAND_NAME = '{{ brand_name }}';
+
+    const moneyFormatter = new Intl.NumberFormat('es-CO', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    const formatMoney = (value) => `$${moneyFormatter.format(Number(value) || 0)}`;
+    const escapeHtml = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }[char]));
+
+    const readCart = () => {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORE_CART_KEY) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_error) {
+        return [];
+      }
+    };
+
+    const writeCart = (items) => {
+      localStorage.setItem(STORE_CART_KEY, JSON.stringify(items));
+      window.dispatchEvent(new CustomEvent('cart:updated'));
+    };
+
+    const cartQuantity = (items = readCart()) => items.reduce((total, item) => total + (Number(item.quantity) || 0), 0);
+
+    const syncCartCount = () => {
+      const badge = document.getElementById('cart-count');
+      if (!badge) return;
+      const total = cartQuantity();
+      badge.textContent = total;
+      badge.classList.toggle('hidden', total <= 0);
+    };
+
+    const absoluteUrl = (value) => {
+      if (!value) return '';
+      try {
+        return new URL(value, window.location.origin).href;
+      } catch (_error) {
+        return value;
+      }
+    };
+
+    const productFromButton = (button) => ({
+      id: button.dataset.productId,
+      name: button.dataset.productName,
+      price: Number(button.dataset.productPrice) || 0,
+      image: button.dataset.productImage || '',
+      url: button.dataset.productUrl || '',
+      section: button.dataset.productSection || '',
+      subcategory: button.dataset.productSubcategory || '',
+      stock: Number(button.dataset.productStock) || 0,
+    });
+
+    const addToCart = (product) => {
+      const items = readCart();
+      const existing = items.find((item) => item.id === product.id);
+      if (existing) {
+        existing.quantity = Math.min((Number(existing.quantity) || 0) + 1, product.stock || 99);
+      } else {
+        items.push({ ...product, quantity: 1 });
+      }
+      writeCart(items);
+    };
+
+    const buildWhatsappUrl = (items) => {
+      const lines = [
+        `Hola, quiero comprar estos productos de ${STORE_BRAND_NAME}:`,
+        '',
+      ];
+      let total = 0;
+
+      items.forEach((item, index) => {
+        const quantity = Number(item.quantity) || 1;
+        const price = Number(item.price) || 0;
+        const subtotal = quantity * price;
+        total += subtotal;
+
+        lines.push(`${index + 1}. ${item.name}`);
+        lines.push(`Cantidad: ${quantity}`);
+        lines.push(`Precio: ${formatMoney(price)}`);
+        lines.push(`Subtotal: ${formatMoney(subtotal)}`);
+        if (item.section) lines.push(`Categoria: ${item.section}`);
+        if (item.subcategory) lines.push(`Subcategoria: ${item.subcategory}`);
+        lines.push(`Foto: ${absoluteUrl(item.image) || 'Sin foto'}`);
+        lines.push(`Producto: ${absoluteUrl(item.url)}`);
+        lines.push('');
+      });
+
+      lines.push(`Total aproximado: ${formatMoney(total)}`);
+      lines.push('Quedo pendiente de disponibilidad y forma de entrega.');
+
+      const text = encodeURIComponent(lines.join('\n'));
+      if (SELLER_WHATSAPP_NUMBER) {
+        return `https://wa.me/${SELLER_WHATSAPP_NUMBER}?text=${text}`;
+      }
+      return `https://api.whatsapp.com/send?text=${text}`;
+    };
+
+    document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
+      button.addEventListener('click', () => {
+        addToCart(productFromButton(button));
+        const originalText = button.querySelector('[data-cart-label]');
+        if (originalText) {
+          originalText.textContent = 'Agregado';
+          window.setTimeout(() => {
+            originalText.textContent = 'Agregar';
+          }, 1200);
+        }
+      });
+    });
+
+    window.LuzuryCart = {
+      read: readCart,
+      write: writeCart,
+      formatMoney,
+      buildWhatsappUrl,
+    };
+
+    window.addEventListener('cart:updated', syncCartCount);
+    window.addEventListener('storage', syncCartCount);
+    syncCartCount();
+
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
       const syncThemeButton = () => {
@@ -145,5 +281,6 @@
       });
     }
   </script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

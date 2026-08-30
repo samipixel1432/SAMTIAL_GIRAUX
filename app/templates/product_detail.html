@@ -34,6 +34,29 @@
     {% endif %}
   </div>
 
+  {% if product.for_sale %}
+  <div class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
+    <button type="button"
+            class="btn bg-slate-900 text-white hover:bg-slate-700 focus-visible:ring-slate-900"
+            data-add-to-cart
+            data-product-id="{{ product.id }}"
+            data-product-name="{{ product.name }}"
+            data-product-price="{{ '%.2f'|format(product.sale_price) }}"
+            data-product-image="{{ product.image_url or '' }}"
+            data-product-url="{{ url_for('main.product_detail', product_id=product.id) }}"
+            data-product-section="{{ info.label }}"
+            data-product-subcategory="{{ product.subcategory or '' }}"
+            data-product-stock="{{ product.quantity }}">
+      {{ icon('shopping-cart', 'w-4 h-4') }}
+      <span data-cart-label>Agregar</span>
+    </button>
+    <a href="{{ url_for('main.cart') }}" class="btn-secondary">
+      {{ icon('message-circle', 'w-4 h-4') }}
+      Ir al carrito
+    </a>
+  </div>
+  {% endif %}
+
   {% if is_admin %}
   <div class="mt-6 border-t border-slate-200 pt-5">
     <p class="mb-4 flex items-center gap-1.5 text-sm text-slate-500">

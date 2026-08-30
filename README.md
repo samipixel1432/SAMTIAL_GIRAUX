@@ -35,6 +35,7 @@ Variables necesarias:
 | `CLOUDINARY_API_SECRET` | Dashboard de Cloudinary |
 | `ADMIN_PASSWORD` | La inventas tú (clave para administrar productos) |
 | `FLASK_SECRET_KEY` | Cualquier texto aleatorio largo |
+| `SELLER_WHATSAPP_NUMBER` | Número del vendedor con código de país, solo números (ej. `573001112233`) |
 
 ## 3. Probarlo en tu computadora (opcional pero recomendado)
 
@@ -69,6 +70,8 @@ git push -u origin main
 ## Cómo se usa
 
 - Cualquiera con el link ve el catálogo (solo los productos marcados "para la venta").
+- Los clientes pueden agregar varios productos al carrito y enviarlos por WhatsApp con
+  foto, enlace, categoria, cantidad y precio para que el vendedor identifique el pedido.
 - Tocando **Administrar** (arriba a la derecha) y con la `ADMIN_PASSWORD`, tu hermano
   puede agregar productos, subir foto desde la cámara del celular, poner el costo
   y ver la recomendación de precio de venta (margen configurable en

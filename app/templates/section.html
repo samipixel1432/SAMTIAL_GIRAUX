@@ -63,9 +63,28 @@
       </div>
     </a>
 
+    {% if p.for_sale %}
+    <div class="px-3.5 pb-3.5 pt-3">
+      <button type="button"
+              class="btn w-full bg-slate-900 text-white hover:bg-slate-700 focus-visible:ring-slate-900"
+              data-add-to-cart
+              data-product-id="{{ p.id }}"
+              data-product-name="{{ p.name }}"
+              data-product-price="{{ '%.2f'|format(p.sale_price) }}"
+              data-product-image="{{ p.image_url or '' }}"
+              data-product-url="{{ url_for('main.product_detail', product_id=p.id) }}"
+              data-product-section="{{ info.label }}"
+              data-product-subcategory="{{ p.subcategory or '' }}"
+              data-product-stock="{{ p.quantity }}">
+        {{ icon('shopping-cart', 'w-4 h-4') }}
+        <span data-cart-label>Agregar</span>
+      </button>
+    </div>
+    {% endif %}
+
     {% if is_admin %}
     <div class="px-3.5 pb-3.5">
-      <div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
+      <div class="flex items-center justify-between border-t border-slate-100 pt-3">
         <span class="inline-flex items-center gap-1 text-xs text-slate-400">
           {{ icon('tag', 'w-3.5 h-3.5') }}
           ${{ "%.2f"|format(p.cost_price) }}

@@ -10,6 +10,7 @@ from app.sections import CATEGORY_ICONS, CATEGORY_STYLES, build_sections, recomm
 bp = Blueprint("main", __name__)
 BRAND_NAME = "LUZURY STORE"
 BRAND_LOGO = "img/luzury-store-logo.jpeg"
+SELLER_WHATSAPP_NUMBER = "".join(ch for ch in os.environ.get("SELLER_WHATSAPP_NUMBER", "") if ch.isdigit())
 
 
 def current_sections():
@@ -33,6 +34,7 @@ def inject_globals():
         "is_admin": session.get("is_admin", False),
         "brand_name": BRAND_NAME,
         "brand_logo": BRAND_LOGO,
+        "seller_whatsapp_number": SELLER_WHATSAPP_NUMBER,
     }
 
 
@@ -73,6 +75,11 @@ def product_detail(product_id):
     if not product["for_sale"] and not is_admin:
         return redirect(url_for("main.section_view", section=product["section"]))
     return render_template("product_detail.html", product=product, section=product["section"])
+
+
+@bp.route("/carrito")
+def cart():
+    return render_template("cart.html")
 
 
 @bp.route("/admin/finanzas")
