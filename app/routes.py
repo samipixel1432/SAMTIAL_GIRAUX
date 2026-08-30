@@ -1,7 +1,7 @@
 import os
 from functools import wraps
 
-from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, request, session, url_for
 
 from app import db
 from app.images import upload_product_image
@@ -11,10 +11,38 @@ bp = Blueprint("main", __name__)
 BRAND_NAME = "LUZURY STORE"
 BRAND_LOGO = "img/luzury-store-logo.jpeg"
 SELLER_WHATSAPP_NUMBER = "".join(ch for ch in os.environ.get("SELLER_WHATSAPP_NUMBER", "") if ch.isdigit())
+FALLBACK_CATEGORIES = [
+    {"key": "dulces", "label": "Dulces", "icon": "gift", "margin": 0.45, "style": "dulces"},
+    {"key": "tecnologia", "label": "Tecnologia", "icon": "cpu-chip", "margin": 0.20, "style": "tecnologia"},
+]
+REQUIRED_ENV_VARS = [
+    "DATABASE_URL",
+    "CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET",
+    "ADMIN_PASSWORD",
+    "FLASK_SECRET_KEY",
+]
 
 
 def current_sections():
+    if current_app.config.get("STARTUP_ERROR"):
+        return build_sections(FALLBACK_CATEGORIES)
     return build_sections(db.list_categories())
+
+
+def missing_env_vars():
+    return [name for name in REQUIRED_ENV_VARS if not os.environ.get(name)]
+
+
+@bp.before_request
+def stop_when_startup_failed():
+    if request.endpoint == "main.health":
+        return None
+    error = current_app.config.get("STARTUP_ERROR")
+    if error:
+        return render_template("setup_error.html", missing_vars=missing_env_vars()), 503
+    return None
 
 
 def admin_required(view):
@@ -35,6 +63,15 @@ def inject_globals():
         "brand_name": BRAND_NAME,
         "brand_logo": BRAND_LOGO,
         "seller_whatsapp_number": SELLER_WHATSAPP_NUMBER,
+    }
+
+
+@bp.route("/health")
+def health():
+    return {
+        "ok": current_app.config.get("STARTUP_ERROR") is None,
+        "missing_env_vars": missing_env_vars(),
+        "startup_error_type": type(current_app.config["STARTUP_ERROR"]).__name__ if current_app.config.get("STARTUP_ERROR") else None,
     }
 
 

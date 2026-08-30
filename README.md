@@ -63,7 +63,8 @@ git push -u origin main
 1. Entra a https://vercel.com/new e importa el repositorio de GitHub.
 2. En "Environment Variables" pega las mismas variables del paso 2
    (`DATABASE_URL`, `CLOUDINARY_CLOUD_NAME`,
-   `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_PASSWORD`, `FLASK_SECRET_KEY`).
+   `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_PASSWORD`,
+   `FLASK_SECRET_KEY`, `SELLER_WHATSAPP_NUMBER`).
 3. Presiona **Deploy**. En 1-2 minutos tendrás un link público (ej.
    `https://luzury-store.vercel.app`) que funciona perfecto desde el celular.
 

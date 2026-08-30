@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Configuracion pendiente{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-xl">
+  <div class="card p-6">
+    <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+      {{ icon('exclamation-triangle', 'w-6 h-6') }}
+    </span>
+    <h1 class="mt-4 text-2xl font-bold tracking-tight text-slate-900">La tienda necesita configurar Vercel</h1>
+    <p class="mt-2 text-sm text-slate-500">
+      El codigo ya esta desplegado, pero la app no pudo conectarse con la configuracion de produccion.
+    </p>
+
+    {% if missing_vars %}
+      <div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <p class="font-semibold">Faltan estas variables de entorno en Vercel:</p>
+        <ul class="mt-2 list-inside list-disc space-y-1">
+          {% for name in missing_vars %}
+            <li><code>{{ name }}</code></li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% else %}
+      <div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <p class="font-semibold">Las variables existen, pero la base de datos no respondio o necesita revisar el esquema.</p>
+      </div>
+    {% endif %}
+
+    <p class="mt-5 text-sm text-slate-500">
+      Cuando corrijas las variables en Vercel, redeploya el proyecto y la tienda vuelve a cargar.
+    </p>
+  </div>
+</div>
+{% endblock %}
