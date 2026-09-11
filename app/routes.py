@@ -10,7 +10,8 @@ from app.sections import CATEGORY_ICONS, CATEGORY_STYLES, build_sections, recomm
 bp = Blueprint("main", __name__)
 BRAND_NAME = "LUZURY STORE"
 BRAND_LOGO = "img/luzury-store-logo.jpeg"
-SELLER_WHATSAPP_NUMBER = "".join(ch for ch in os.environ.get("SELLER_WHATSAPP_NUMBER", "") if ch.isdigit())
+DEFAULT_SELLER_WHATSAPP_NUMBER = "573117282974"
+SELLER_WHATSAPP_NUMBER = "".join(ch for ch in os.environ.get("SELLER_WHATSAPP_NUMBER", "") if ch.isdigit()) or DEFAULT_SELLER_WHATSAPP_NUMBER
 FALLBACK_CATEGORIES = [
     {"key": "dulces", "label": "Dulces", "icon": "gift", "margin": 0.45, "style": "dulces"},
     {"key": "tecnologia", "label": "Tecnologia", "icon": "cpu-chip", "margin": 0.20, "style": "tecnologia"},

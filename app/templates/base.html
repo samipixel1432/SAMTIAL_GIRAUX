@@ -102,7 +102,7 @@
 
   <script>
     const STORE_CART_KEY = 'luzury-store-cart';
-    const SELLER_WHATSAPP_NUMBER = '{{ seller_whatsapp_number }}';
+    const SELLER_WHATSAPP_NUMBER = '{{ seller_whatsapp_number or "573117282974" }}';
     const STORE_BRAND_NAME = '{{ brand_name }}';
 
     const moneyFormatter = new Intl.NumberFormat('es-CO', {
@@ -202,10 +202,7 @@
       lines.push('Quedo pendiente de disponibilidad y forma de entrega.');
 
       const text = encodeURIComponent(lines.join('\n'));
-      if (SELLER_WHATSAPP_NUMBER) {
-        return `https://wa.me/${SELLER_WHATSAPP_NUMBER}?text=${text}`;
-      }
-      return `https://api.whatsapp.com/send?text=${text}`;
+      return `https://wa.me/${SELLER_WHATSAPP_NUMBER}?text=${text}`;
     };
 
     document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
